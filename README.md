@@ -147,7 +147,7 @@ Follow these steps to set up and run the application locally:
    ```    
 2. **Generate the Code: If the code has not been generated yet, use the OpenAPI Generator CLI to generate the necessary files**:
    ```bash
-	openapi-generator-cli generate -i hbma-api.yaml -g spring -o hbma
+	openapi-generator-cli generate -i hbma-api.yaml -g spring -o hbma-java
 	```
 	
 3. **Build and Run: After generating the code, build the application with Maven and start the Spring Boot server**:

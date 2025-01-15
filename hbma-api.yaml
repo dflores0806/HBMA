@@ -1,0 +1,93 @@
+openapi: 3.0.0
+info:
+  title: API for managing the HBMA architectural pattern
+  version: 1.0.0
+paths:
+  /persons:
+    get:
+      summary: Retrieve a list of persons
+      responses:
+        '200':
+          description: A list of persons
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Person'
+    post:
+      summary: Create a new person
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+      responses:
+        '201':
+          description: Person created successfully
+  /persons/{id}:
+    get:
+      summary: Get information about a person by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Information about the person
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+components:
+  schemas:
+    Person:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        device:
+          $ref: '#/components/schemas/Device'
+        virtualProfile:
+          $ref: '#/components/schemas/VirtualProfile'
+    Device:
+      type: object
+      properties:
+        id:
+          type: string
+        manufacturer:
+          type: string
+        model:
+          type: string
+    VirtualProfile:
+      type: object
+      properties:
+        service:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+    Service:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        endpoint:
+          type: string
+        access:
+          $ref: '#/components/schemas/AccessControl'
+    AccessControl:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        value:
+          type: string

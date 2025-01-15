@@ -1,0 +1,159 @@
+openapi: 3.0.0
+info:
+  title: API for Managing Persons and Devices
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /persons:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Person'
+                type: array
+          description: A list of persons
+      summary: Retrieve a list of persons
+      x-accepts:
+      - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+        required: true
+      responses:
+        "201":
+          description: Person created successfully
+      summary: Create a new person
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /persons/{id}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+          description: Information about the person
+      summary: Get information about a person by ID
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    Person:
+      example:
+        virtualProfile:
+          service:
+          - endpoint: endpoint
+            access:
+              name: name
+              id: id
+              value: value
+            name: name
+            id: id
+          - endpoint: endpoint
+            access:
+              name: name
+              id: id
+              value: value
+            name: name
+            id: id
+        name: name
+        id: id
+        device:
+          model: model
+          id: id
+          manufacturer: manufacturer
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        device:
+          $ref: '#/components/schemas/Device'
+        virtualProfile:
+          $ref: '#/components/schemas/VirtualProfile'
+      type: object
+    Device:
+      example:
+        model: model
+        id: id
+        manufacturer: manufacturer
+      properties:
+        id:
+          type: string
+        manufacturer:
+          type: string
+        model:
+          type: string
+      type: object
+    VirtualProfile:
+      example:
+        service:
+        - endpoint: endpoint
+          access:
+            name: name
+            id: id
+            value: value
+          name: name
+          id: id
+        - endpoint: endpoint
+          access:
+            name: name
+            id: id
+            value: value
+          name: name
+          id: id
+      properties:
+        service:
+          items:
+            $ref: '#/components/schemas/Service'
+          type: array
+      type: object
+    Service:
+      example:
+        endpoint: endpoint
+        access:
+          name: name
+          id: id
+          value: value
+        name: name
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        endpoint:
+          type: string
+        access:
+          $ref: '#/components/schemas/AccessControl'
+      type: object
+    AccessControl:
+      example:
+        name: name
+        id: id
+        value: value
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+      type: object
