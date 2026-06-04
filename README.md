@@ -1,183 +1,204 @@
 # HBMA
-The Human-Based Microservices Architecture (HBMA) pattern: an Architectural Pattern for Providing People’s Information from their Companion Devices
+
+The Human-Based Microservices Architecture (HBMA) pattern: an architectural pattern for providing people’s information from their companion devices.
+
+This repository provides a reusable implementation skeleton for the HBMA pattern. It includes an OpenAPI specification, a Java Spring Boot skeleton generated from that specification, and a simple running example that illustrates how a person’s virtual profile can be requested, shared, and made available as services.
+
+---
+
+## Repository contents
+
+- `hbma-api.yaml`: OpenAPI 3.0 specification for the main HBMA entities.
+- `hbma-java/`: Java Spring Boot skeleton generated from the OpenAPI specification.
+- `examples/virtual-profile-example.json`: example of a person’s virtual profile.
+- `examples/mqtt-running-example.md`: simplified MQTT-based running example aligned with the manuscript.
+- `openapitools.json`: OpenAPI Generator configuration.
+
+---
+
+## HBMA running example
+
+The running example follows the scenario described in the paper:
+
+1. A controller detects a person in the environment.
+2. The controller requests the person’s virtual profile.
+3. The companion device provides the virtual profile.
+4. The received profile is made available through services according to the associated access-control information.
+
+This example is intentionally simple. Its goal is to show how the HBMA entities can be represented and exchanged, while the generated Java skeleton provides a reusable basis for more complete implementations.
 
 ---
 
 ## Features
 
-- **RESTful API** for managing entities:
-  - `Person` with attributes like `id`, `name`, `device`, and `virtualProfile`.
-  - `Device` containing `id`, `manufacturer`, and `model`.
-  - `VirtualProfile` containing a list of `Service` objects.
-  - `Service` with attributes `id`, `name`, `endpoint`, and `access` (reference to `AccessControl`).
-  - `AccessControl` for managing privacy settings with attributes `id`, `name`, and `value`.
+- RESTful API for managing HBMA entities:
+  - `Person`, with attributes such as `id`, `name`, `device`, and `virtualProfile`.
+  - `Device`, with attributes such as `id`, `manufacturer`, and `model`.
+  - `VirtualProfile`, containing a list of `Service` objects.
+  - `Service`, with attributes such as `id`, `name`, `endpoint`, and `access`.
+  - `AccessControl`, for managing privacy settings.
 - Custom methods:
-  - `sendProfile`: Sends a person's virtual profile.
-  - `setPrivacy`: Configures privacy settings for services.
-- **Code generation** using OpenAPI Generator:
-  - Automatically generates models, controllers, and services from the OpenAPI specification.
-- **Extensible design**: Easy to customize and add new functionality.
+  - `sendProfile`: sends a person’s virtual profile.
+  - `setPrivacy`: configures privacy settings for services.
+- Code generation using OpenAPI Generator.
+- Extensible design for adding new HBMA components, services, or persistence mechanisms.
+- Example material for understanding the use of virtual profiles and MQTT-based profile exchange.
 
 ---
 
-## Project Structure
+## Project structure
 
-```plaintext
-src/
-├── main/
-│   ├── java/
-│   │   ├── com.example.api/
-│   │   │   ├── controllers/   # REST controllers for handling API requests
-│   │   │   ├── models/        # Data models (Person, Device, VirtualProfile, etc.)
-│   │   │   ├── services/      # Business logic interfaces and implementations
-│   │   │   └── exceptions/    # Custom exceptions for error handling
-│   ├── resources/
-│   │   ├── application.yml    # Spring Boot application configuration
-└── test/
-    ├── java/                  # Unit and integration tests
+```text
+HBMA/
+├── README.md
+├── hbma-api.yaml
+├── openapitools.json
+├── hbma-java/
+│   └── src/
+│       ├── main/
+│       │   ├── java/
+│       │   │   └── ...
+│       │   └── resources/
+│       └── test/
+└── examples/
+    ├── virtual-profile-example.json
+    └── mqtt-running-example.md
 ```
 
-## OpenAPI Specification
+---
 
-The API is defined using an OpenAPI 3.0 specification, detailed in the [`hbma-api.yaml`](hbma-api.yaml) file. The main components include:
+## OpenAPI specification
 
-- **Paths**:
-  - `/persons`: Retrieve or create persons.
-  - `/persons/{id}`: Retrieve a specific person by ID.
-- **Schemas**:
-  - `Person`, `Device`, `VirtualProfile`, `Service`, and `AccessControl`.
+The API is defined using an OpenAPI 3.0 specification in `hbma-api.yaml`.
 
-### Excerpt
+The main elements are:
 
-```yaml
-openapi: 3.0.0
-info:
-  title: API for Managing Persons and Devices
-  version: 1.0.0
-paths:
-  /persons:
-    get:
-      summary: Retrieve a list of persons
-      responses:
-        '200':
-          description: A list of persons
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Person'
-    post:
-      summary: Create a new person
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Person'
-components:
-  schemas:
-    Person:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        device:
-          $ref: '#/components/schemas/Device'
-        virtualProfile:
-          $ref: '#/components/schemas/VirtualProfile'
-    Device:
-      type: object
-      properties:
-        id:
-          type: string
-        manufacturer:
-          type: string
-        model:
-          type: string
-    VirtualProfile:
-      type: object
-      properties:
-        service:
-          type: array
-          items:
-            $ref: '#/components/schemas/Service'
-    Service:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        endpoint:
-          type: string
-        access:
-          $ref: '#/components/schemas/AccessControl'
-    AccessControl:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        value:
-          type: string
-```
+- Paths:
+  - `/persons`: retrieve or create persons.
+  - `/persons/{id}`: retrieve a specific person by ID.
+- Schemas:
+  - `Person`
+  - `Device`
+  - `VirtualProfile`
+  - `Service`
+  - `AccessControl`
+
+The OpenAPI specification can be used to generate server skeletons in Java, Python, Node.js, and other languages supported by OpenAPI Generator.
+
+---
 
 ## Prerequisites
 
-Before you begin, ensure you have met the following requirements:
+Before running the project, install:
 
-- **Java**: Version 11 or later.
-- **Maven**: Version 3.6 or later.
-- **OpenAPI Generator CLI**: Install it by following the [OpenAPI Generator installation instructions](https://openapi-generator.tech/docs/installation/).
+- Java 11 or later
+- Maven 3.6 or later
+- OpenAPI Generator CLI
+- Optional: an MQTT broker such as Mosquitto, if you want to reproduce the MQTT-based example conceptually
 
 ---
 
-## Setup and Execution
+## Setup and execution
 
-Follow these steps to set up and run the application locally:
-
-1. **Clone the repository**:
-   ```bash
-   git https://github.com/dflores0806/HBMA.git
-   cd HBMA
-   ```    
-2. **Generate the Code: If the code has not been generated yet, use the OpenAPI Generator CLI to generate the necessary files**:
-   ```bash
-	openapi-generator-cli generate -i hbma-api.yaml -g spring -o hbma-java
-	```
-	
-3. **Build and Run: After generating the code, build the application with Maven and start the Spring Boot server**:
-   ```bash
-   mvn clean install
-   mvn spring-boot:run
-   ```
-   
-4. **Access the API**:
-   - **Base URL**: `http://localhost:8080`
-   - Example Endpoints:
-     - `GET /persons`: Retrieve all persons.
-     - `POST /persons`: Create a new person.
-
-5. **Swagger UI** (if enabled):
-   Navigate to `http://localhost:8080/swagger-ui.html` to explore and test the API.
-   
-## Testing
-
-To run the tests, use Maven:
+Clone the repository:
 
 ```bash
+git clone https://github.com/dflores0806/HBMA.git
+cd HBMA
+```
+
+Generate the Java Spring Boot skeleton from the OpenAPI specification:
+
+```bash
+openapi-generator-cli generate -i hbma-api.yaml -g spring -o hbma-java
+```
+
+Build and run the generated application:
+
+```bash
+cd hbma-java
+mvn clean install
+mvn spring-boot:run
+```
+
+The API will be available at:
+
+```text
+http://localhost:8080
+```
+
+Example endpoints:
+
+- `GET /persons`
+- `POST /persons`
+- `GET /persons/{id}`
+
+If Swagger UI is enabled in the generated project, it can normally be accessed at:
+
+```text
+http://localhost:8080/swagger-ui.html
+```
+
+---
+
+## Example virtual profile
+
+The file `examples/virtual-profile-example.json` provides a simplified virtual profile for a person represented by a companion device.
+
+The profile includes:
+
+- person identifier;
+- associated device;
+- services exposed by the person;
+- access-control information;
+- preferences and objectives.
+
+This example can be adapted to different domains where people’s information must be locally managed and selectively exposed as services.
+
+---
+
+## MQTT-based running example
+
+The file `examples/mqtt-running-example.md` describes a simple MQTT-based interaction:
+
+1. The controller publishes a profile request.
+2. The companion device receives the request.
+3. The companion device publishes the virtual profile.
+4. The controller receives and processes the profile.
+5. The profile information becomes available through HBMA services.
+
+This example is aligned with the implementation discussion in the paper and illustrates how HBMA can be instantiated using message-based communication.
+
+---
+
+## Testing
+
+To run the tests in the generated Java project:
+
+```bash
+cd hbma-java
 mvn test
 ```
 
-## Future Enhancements
+---
 
-We have some plans for future improvements in the application:
+## Future enhancements
 
-- **Database Integration**: Implement persistence with a relational database using JPA/Hibernate.
-- **Security**: Introduce authentication and authorization mechanisms such as JWT or OAuth2.
-- **Request Validation**: Enhance validation for incoming requests using annotations like `@Valid`.
-- **Cloud Deployment**: Adapt the application for deployment to cloud platforms like AWS, GCP, or Azure.
+Possible future extensions include:
+
+- persistence with a relational or document database;
+- authentication and authorization mechanisms;
+- richer access-control policies;
+- validation of incoming requests;
+- additional examples for edge, mobile, and IoT deployments;
+- deployment instructions for cloud or container-based environments.
+
+---
+
+## Authors
+
+ - Daniel Flores-Martin: [dfloresm@unex.es](mailto:dfloresm@unex.es)
+   - COMPUTAEX. Extremadura Supercomputing Center (Spain)  
+   - Lead Developer & Researcher
+
+We welcome suggestions, issues and contributions from the community!

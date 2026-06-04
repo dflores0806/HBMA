@@ -1,0 +1,49 @@
+{
+  "person": {
+    "id": "J0123E",
+    "name": "John Doe",
+    "device": {
+      "id": "LE113",
+      "manufacturer": "OnePlus",
+      "model": "OnePlus 9",
+      "type": "smartphone"
+    },
+    "virtualProfile": {
+      "services": [
+        {
+          "id": "OP9Loc",
+          "name": "Location",
+          "endpoint": "http://localhost:8080/persons/J0123E/services/location",
+          "access": {
+            "id": "PG1",
+            "name": "Public",
+            "value": "public"
+          },
+          "value": "39.4570601,-6.3835215"
+        },
+        {
+          "id": "OP9Pref",
+          "name": "Music preferences",
+          "endpoint": "http://localhost:8080/persons/J0123E/services/preferences/music",
+          "access": {
+            "id": "PG2",
+            "name": "Private",
+            "value": "private"
+          },
+          "value": "Pop/Rock"
+        }
+      ],
+      "objectives": [
+        {
+          "id": "reduce-consumption",
+          "name": "Home consumption",
+          "value": "30%",
+          "properties": {
+            "location": "39.4570601,-6.3835215",
+            "time": "20:24:57 CET"
+          }
+        }
+      ]
+    }
+  }
+}
