@@ -195,6 +195,29 @@ Possible future extensions include:
 
 ---
 
+## Citation
+
+If you use HBMA in your research, please cite the following publication:
+
+**APA (7th edition)**
+
+Flores-Martin, D., Berrocal, J., García-Alonso, J., Canal, C., & Murillo, J. M. (2026). HBMA: An architectural pattern for providing people's information from their companion devices. *Software: Practice and Experience*. https://doi.org/10.1002/spe.70120
+
+**BibTeX (LaTeX)**
+
+```bibtex
+@article{FloresMartin2026HBMA,
+  author  = {Flores-Martin, Daniel and Berrocal, Javier and García-Alonso, José and Canal, Carlos and Murillo, Juan M.},
+  title   = {{HBMA}: An Architectural Pattern for Providing People's Information from their Companion Devices},
+  journal = {Software: Practice and Experience},
+  year    = {2026},
+  doi     = {10.1002/spe.70120},
+  url     = {https://doi.org/10.1002/spe.70120}
+}
+```
+
+---
+
 ## Authors
 
  - Daniel Flores-Martin: [dfloresm@unex.es](mailto:dfloresm@unex.es)
